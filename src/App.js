@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
+import { connect } from 'react-redux';
+import { loginUser } from './redux/reducer';
 
 class App extends Component {
   constructor(props) {
-    super(props);
+    super();
     this.state = { username: '', email: '' };
   }
 
@@ -11,6 +13,12 @@ class App extends Component {
     this.setState({
       [e.target.name]: e.target.value,
     });
+  };
+
+  handleClick = () => {
+    const { username, email } = this.state;
+    const user = { username, email };
+    this.props.loginUser(user);
   };
 
   render() {
@@ -31,10 +39,11 @@ class App extends Component {
           value={this.state.email}
         />
         <span> - </span>
-        <button> Submit </button>
+        <button onClick={this.handleClick}> Submit </button>
+        <h3>The username is : {this.props.user.username}</h3>
       </div>
     );
   }
 }
-
-export default App;
+const mapStateToProps = (state) => state;
+export default connect(mapStateToProps, { loginUser })(App);
